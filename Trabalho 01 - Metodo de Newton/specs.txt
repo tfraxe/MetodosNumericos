@@ -1,0 +1,15 @@
+Tema4:
+Uma determinada reação química produz uma quantidade c de CO 2 medida em ppm (parte por milhão) dada pela equação polinomial
+f(c) = a 4 c 4 + a 3 c 3 + a 2 c 2 + a 1 c + a 0 . Se ξ é uma raiz de f(x) = 0 com multiplicidade p, dados x o e ε, para cada passo o método de Newton-
+Raphson é dado por x k+1 = x k – (pf(x k ) / f ’(x k )) (k = 0,1,2...). De forma análoga pode-se introduzir um fator p no método da Secante para
+raízes múltiplas, obtendo então, x k+1 = x k – (pf(x k )(x k – x k-1 ))/(f(x k ) – f(x k-1 )) (k = 0,1,2,...). Desenvolva um sistema para calcular a
+quantidade c de CO 2 de uma determinada reação química dada. O sistema deve atender aos seguintes requisitos dados pelos itens abaixo:
+a) Implementar algoritmo para calcular c pelo método de Newton para polinômios.
+b) Implementar algoritmo para calcular c pelo método de Newton para multiplicidade.
+c) Implementar algoritmo para calcular c pelo método da Secante para multiplicidade.
+d) Calibrar o sistema usando como padrão a 4 =1, a 3 =-5, a 2 =6, a 1 =4, a 0 =-8, e p=3.
+e) Fornecer um quadro resposta, com quantidade calculada para cada método dado.
+f)
+Fornecer um quadro comparativo, com todos os dados para cada método dado.
+Dados de entrada: n (número de reações), a k (k=0 a 4) e p (para cada opção) e ε (precisão).
+Dados de saída: quadros resposta (com c para cada reação e método) e comparativo.
