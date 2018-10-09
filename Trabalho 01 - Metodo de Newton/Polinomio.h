@@ -32,7 +32,7 @@ public:
 				out << " + " << "";
 		}
 
-		out << p.coeficientes[p.grau] <<  endl;
+		out << p.coeficientes[p.grau];
 		return out;
 	}
 
@@ -47,6 +47,21 @@ public:
 		}
 
 		return resultado;
+	}
+
+
+	Polinomio gerarDerivada(void) const
+	{
+		vector<double> novosCoeficientes;
+		unsigned short int novoGrau = this->grau - 1;
+
+		for(int i = 0; i <= novoGrau; i++)
+		{
+			novosCoeficientes.push_back(this->coeficientes[i] * (this->grau - i));
+		}
+
+		return Polinomio(novoGrau, novosCoeficientes);
+
 	}
 
 
