@@ -9,6 +9,7 @@ class Polinomio {
 private:
 	unsigned short int grau;
 	vector<double> coeficientes;
+
 public:
 	Polinomio(unsigned short int g, vector<double>& c)
 	{
@@ -19,6 +20,7 @@ public:
 			throw "Quantidade de coeficientes não corresponde ao grau do polinomio";
 		coeficientes = c;
 		grau = g;
+
 	}
 
 	friend ostream& operator << (ostream& out, const Polinomio& p)
@@ -63,6 +65,8 @@ public:
 		return Polinomio(novoGrau, novosCoeficientes);
 
 	}
+
+	
 
 
 };
