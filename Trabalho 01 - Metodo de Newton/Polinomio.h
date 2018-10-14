@@ -1,8 +1,101 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <sstream>
 
 using namespace std;
+
+
+class Resultado 
+{
+private:
+	double raiz;
+	unsigned short int numIter;
+	bool error;
+	double chuteInicial;
+	string polinomio;
+	string metodo;
+public:
+	Resultado()
+	{
+		raiz = 0.0;
+		numIter = 0.0;
+		error = false;
+		chuteInicial = 0.0;
+		polinomio = "";
+		metodo = "";
+	}
+
+
+	void setRaiz(double r)
+	{
+		this->raiz = r;
+	}
+
+	void setNumIter(double n)
+	{
+		this->numIter = n;
+	}
+
+	void setError (bool e)
+	{
+		this->error = e;
+	}
+
+	void setChuteInicial (double c)
+	{
+		this->chuteInicial = c;
+	}
+
+	void setPolinomio (string p)
+	{
+		this->polinomio = p;
+	}
+
+	void setMetodo(string m)
+	{
+		this->metodo = m;
+	}
+
+
+	double getRaiz(void)
+	{
+		return this->raiz;
+	}
+
+	unsigned short int getNumIter(void)
+	{
+		return this->numIter;
+	}
+
+	bool getError (void)
+	{
+		return this->error;
+	}
+
+	double getChuteInicial (void)
+	{
+		return this->chuteInicial;
+	}
+
+	string getPolinomio (void)
+	{
+		return this->polinomio;
+	}
+
+	string getMetodo(void)
+	{
+		return this->metodo;
+	}
+
+
+
+
+};
+
+
+
+
 
 class Polinomio {
 
@@ -28,10 +121,23 @@ public:
 
 		for(int g = p.grau; g > 0; g--)
 		{
-			out << p.coeficientes[p.grau - g] << "x^" << g << "";
+			if(p.coeficientes[p.grau - g] != 0) {
 
-			if (g != 0)
-				out << " + " << "";
+				if(p.coeficientes[p.grau - g] != 1)
+					out << p.coeficientes[p.grau - g] << "x";
+				else
+					out << "x";
+
+				if(g > 1) 
+					out << "^" << g << " ";
+				else
+					out << " ";
+
+			}
+
+			if (g != 0 && p.coeficientes[p.grau-g + 1] > 0)
+				out << "+" << "";
+
 		}
 
 		out << p.coeficientes[p.grau];
@@ -63,6 +169,54 @@ public:
 		}
 
 		return Polinomio(novoGrau, novosCoeficientes);
+
+	}
+
+
+	Resultado calcularRaizNewtonMultiplicidade(unsigned short int p, double precisao, double guess)
+	{
+		Resultado resultado;
+		stringstream polinomio;
+		polinomio << *this;
+		resultado.setPolinomio(polinomio.str());
+		resultado.setChuteInicial(guess);
+		resultado.setMetodo("Método de Newton para Multiplicidade");
+		
+
+		unsigned short int numIter = 0;
+	
+		Polinomio derivada = this->gerarDerivada();
+
+		double currentValue = guess;
+
+		double nextValue;
+
+
+
+		while (numIter < 1000)
+		{
+			
+			nextValue = currentValue - p* this->calcular(currentValue)/derivada.calcular(currentValue);
+
+
+			if (abs(nextValue - currentValue) < precisao){
+				resultado.setRaiz(nextValue);
+				resultado.setNumIter(numIter + 1);
+				resultado.setError(false);
+
+				return resultado;
+
+			}
+
+
+			currentValue = nextValue;
+			numIter++;
+		} 
+
+		resultado.setRaiz(0.0);
+		resultado.setNumIter(numIter + 1);
+		resultado.setError(true);
+		return resultado;
 
 	}
 
