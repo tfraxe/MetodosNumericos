@@ -172,6 +172,22 @@ public:
 
 	}
 
+	void getIntervalo(double *ret)
+	{
+		int c=0;
+
+		while(c<100)
+		{
+			if( ((this->calcular(c) <= 0) && (this->calcular(c+1) >= 0)) || 
+				((this->calcular(c) >= 0) && (this->calcular(c+1) <= 0)) )
+				{
+					ret[0] = c; ret[1] = c+1;
+					c = 100;
+				}
+			c++;
+		}
+	}
+
 
 	Resultado calcularRaizNewtonMultiplicidade(unsigned short int p, double precisao, double guess)
 	{
@@ -217,6 +233,48 @@ public:
 		resultado.setNumIter(numIter + 1);
 		resultado.setError(true);
 		return resultado;
+
+	}
+
+	Resultado calcularRaizSecanteMultiplicidade(double precisao,unsigned short int p)
+	{
+		double xk_prox, xk_anterior, xk_atual, condicao, numIter=1, *intervalo;;
+		Resultado retorno;
+
+		intervalo = (double*) calloc(2, sizeof(double));
+		this->getIntervalo(intervalo);
+
+		stringstream polinomio;
+		polinomio << *this;
+		retorno.setPolinomio(polinomio.str());
+		retorno.setMetodo("Metodo da Secante para multiplicidade");
+		retorno.setChuteInicial(xk_atual);
+
+		xk_anterior = intervalo[0] + 0.5;
+		xk_atual = xk_anterior + 0.2;
+
+		while(numIter < 1000)
+		{
+			if(abs(xk_anterior - xk_atual) < precisao)
+			{
+				retorno.setNumIter(numIter);
+				retorno.setRaiz(xk_atual);
+				free(intervalo);
+				return retorno;
+			}
+
+			xk_prox = xk_atual - ((p*this->calcular(xk_atual)*(xk_atual - xk_anterior))/(this->calcular(xk_atual) - this->calcular(xk_anterior)));
+			xk_anterior = xk_atual;
+			xk_atual = xk_prox;
+
+			numIter++;
+		}
+
+		retorno.setRaiz(xk_atual);
+		retorno.setNumIter(numIter);
+		retorno.setError(true);
+		free(intervalo);
+		return retorno;
 
 	}
 
