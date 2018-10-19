@@ -2,6 +2,7 @@
 #include <cmath>
 #include <vector>
 #include <sstream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -244,6 +245,9 @@ public:
 		intervalo = (double*) calloc(2, sizeof(double));
 		this->getIntervalo(intervalo);
 
+		xk_anterior = intervalo[0] + 0.5;
+		xk_atual = xk_anterior + 0.2;
+		
 		stringstream polinomio;
 		polinomio << *this;
 		retorno.setPolinomio(polinomio.str());
