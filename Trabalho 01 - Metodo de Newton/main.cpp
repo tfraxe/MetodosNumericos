@@ -62,8 +62,19 @@ int main(int argc, char const *argv[])
 		cout << "Deu erro? " << (resul.getError() ? "Sim" : "Não") << endl;
 		cout << "=================================================================================" << endl;
 
+		/*
+						Método de Newton para polinomios
+		*/
 
-
+		Resultado resposta = teste.calcularRaizNewtonPolinomios(precisao);
+		cout << "==========================" << resposta.getMetodo() << "==========================" << endl;
+		cout << "Polinômio calculado: " << resposta.getPolinomio() << endl;
+		cout << "Raiz encontrada: " << resposta.getRaiz() << endl;
+		cout << "valor do polinômio na raiz encontrada acima: " <<  teste.calcular(resposta.getRaiz()) << endl;
+		cout << "Numero de iterações: " << resposta.getNumIter() << endl;
+		cout << "Chute Inicial: " << resposta.getChuteInicial() << endl;
+		cout << "Deu erro? " << (resposta.getError() ? "Sim" : "Não") << endl;
+		cout << "=================================================================================" << endl;
 
 
 	} catch (const char* msg) {

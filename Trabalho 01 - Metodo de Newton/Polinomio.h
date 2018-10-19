@@ -2,7 +2,6 @@
 #include <cmath>
 #include <vector>
 #include <sstream>
-#include <stdlib.h>
 
 using namespace std;
 
@@ -245,9 +244,6 @@ public:
 		intervalo = (double*) calloc(2, sizeof(double));
 		this->getIntervalo(intervalo);
 
-		xk_anterior = intervalo[0] + 0.5;
-		xk_atual = xk_anterior + 0.2;
-		
 		stringstream polinomio;
 		polinomio << *this;
 		retorno.setPolinomio(polinomio.str());
@@ -282,7 +278,49 @@ public:
 
 	}
 
-	
+	Resultado calcularRaizNewtonPolinomios(double precisao)
+	{
+		double b, c, x, deltax, numIter = 1, *intervalo;
+		Resultado retorno;
+
+		intervalo = (double*) calloc(2, sizeof(double));
+		this->getIntervalo(intervalo);
+		x = (intervalo[0] + intervalo[1]) / 2;
+		deltax = x;
+
+		stringstream polinomio;
+		polinomio << *this;
+		retorno.setPolinomio(polinomio.str());
+		retorno.setMetodo("Metodo de Newton para Polinomios");
+		retorno.setChuteInicial(deltax);
+
+		while(numIter < 1000)
+		{
+			b = this->coeficientes[0];
+			c = b;
+			for(int i = 1; i <= this->grau - 1; i++)
+			{
+				b = this->coeficientes[i] + (b * x);
+				c = b + (c * x);
+			}
+			b = this->coeficientes[this->grau] + (b * x);
+			if(abs(b) <= precisao)
+				break;
+			deltax = b / c;
+			x = x - deltax;
+			if(abs(deltax) <= precisao)
+				break;
+			numIter++;
+		}
+		if(numIter < 1000)
+			retorno.setError(false);
+		else
+			retorno.setError(true);
+		retorno.setRaiz(x);
+		retorno.setNumIter(numIter);
+		free(intervalo);
+		return retorno;
+	}	
 
 
 };
