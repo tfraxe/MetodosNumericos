@@ -102,6 +102,7 @@ class Polinomio {
 private:
 	unsigned short int grau;
 	vector<double> coeficientes;
+    double *raizesResultado;
 
 public:
 	Polinomio(unsigned short int g, vector<double>& c)
@@ -113,6 +114,7 @@ public:
 			throw "Quantidade de coeficientes não corresponde ao grau do polinomio";
 		coeficientes = c;
 		grau = g;
+        raizesResultado = (double*) calloc(3,sizeof(double));
 
 	}
 
@@ -195,6 +197,13 @@ public:
 			c++;
 		}
 	}
+	
+	double* getRaizes() //=====================================
+    {
+        double *p;
+        p = this->raizesResultado;
+        return p;
+    }
 
 
 	Resultado calcularRaizNewtonMultiplicidade(unsigned short int p, double precisao, double guess)
@@ -227,7 +236,8 @@ public:
 				resultado.setRaiz(nextValue);
 				resultado.setNumIter(numIter + 1);
 				resultado.setError(false);
-
+                                
+                raizesResultado[1] = resultado.getRaiz();
 				return resultado;
 
 			}
@@ -240,13 +250,14 @@ public:
 		resultado.setRaiz(0.0);
 		resultado.setNumIter(numIter + 1);
 		resultado.setError(true);
+        raizesResultado[1] = resultado.getRaiz();
 		return resultado;
 
 	}
 
 	Resultado calcularRaizSecanteMultiplicidade(double precisao,unsigned short int p)
 	{
-		double xk_prox, xk_anterior, xk_atual, condicao, numIter=1, *intervalo;;
+		double xk_prox, xk_anterior, xk_atual, numIter=1, *intervalo;;
 		Resultado retorno;
 
 		intervalo = (double*) calloc(2, sizeof(double));
@@ -268,6 +279,7 @@ public:
 				retorno.setNumIter(numIter);
 				retorno.setRaiz(xk_atual);
 				free(intervalo);
+                raizesResultado[2] = retorno.getRaiz();
 				return retorno;
 			}
 
@@ -282,6 +294,7 @@ public:
 		retorno.setNumIter(numIter);
 		retorno.setError(true);
 		free(intervalo);
+        raizesResultado[2] = retorno.getRaiz();
 		return retorno;
 
 	}
@@ -327,6 +340,7 @@ public:
 		retorno.setRaiz(x);
 		retorno.setNumIter(numIter);
 		free(intervalo);
+        raizesResultado[0] = retorno.getRaiz();
 		return retorno;
 	}	
 

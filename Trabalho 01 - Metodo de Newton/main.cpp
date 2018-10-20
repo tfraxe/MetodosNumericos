@@ -9,7 +9,7 @@ int main(int argc, char const *argv[])
 	vector<double> coef {1, -5, 6, 4, -8}; //Coeficiente do polinômio. A primeira posição corresponde ao coeficiente de maior grau. 
 	try{
 		Polinomio teste(4, coef);
-
+        int n=1;
 		double precisao,xk_ant,xk_prox;
 		double resultado = teste.calcular(2);
 		cout << resultado << endl;
@@ -76,6 +76,36 @@ int main(int argc, char const *argv[])
 		cout << "Deu erro? " << (resposta.getError() ? "Sim" : "Não") << endl;
 		cout << "=================================================================================" << endl;
 
+        
+        //=================
+        vector <Polinomio> polinomios;
+        
+        double *p;
+        p = (double*) calloc(3,sizeof(double));
+        polinomios.push_back(teste);
+        int cont=0;
+        
+        
+        
+        
+        /*
+            Printa as linhas do quadro comparativo:
+         */
+        
+        cout<<"          Polinomio             " << "Newnton" << " | " << "Nm" <<  " | "<< "Sec" << endl; 
+        while(cont < n)
+        {
+            
+            p = polinomios[cont].getRaizes();
+            cout<< polinomios[cont]<<" | " << p[0] << " | " << p[1] << " | " << p[2] << endl;
+            cont++;
+        }
+        free(p);
+        
+        /*
+         * 
+         */
+        
 
 	} catch (const char* msg) {
 		cerr << msg << endl;
