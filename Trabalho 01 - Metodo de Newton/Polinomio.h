@@ -184,6 +184,14 @@ public:
 					ret[0] = c; ret[1] = c+1;
 					c = 100;
 				}
+
+			if( ((this->calcular(-c) <= 0) && (this->calcular(-(c+1)) >= 0)) || 
+				((this->calcular(-c) >= 0) && (this->calcular(-(c+1)) <= 0)) )
+				{
+					ret[0] = -c; ret[1] = -(c+1);
+					c = 100;
+				}
+
 			c++;
 		}
 	}
