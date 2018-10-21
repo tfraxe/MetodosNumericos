@@ -87,14 +87,7 @@ public:
 	{
 		return this->metodo;
 	}
-
-
-
-
 };
-
-
-
 
 
 class Polinomio {
@@ -102,7 +95,7 @@ class Polinomio {
 private:
 	unsigned short int grau;
 	vector<double> coeficientes;
-    double *raizesResultado;
+	double *raizesResultado;
 
 public:
 	Polinomio(unsigned short int g, vector<double>& c)
@@ -236,8 +229,7 @@ public:
 				resultado.setRaiz(nextValue);
 				resultado.setNumIter(numIter + 1);
 				resultado.setError(false);
-                                
-                raizesResultado[1] = resultado.getRaiz();
+                		raizesResultado[1] = resultado.getRaiz();
 				return resultado;
 
 			}
@@ -250,7 +242,7 @@ public:
 		resultado.setRaiz(0.0);
 		resultado.setNumIter(numIter + 1);
 		resultado.setError(true);
-        raizesResultado[1] = resultado.getRaiz();
+        	raizesResultado[1] = resultado.getRaiz();
 		return resultado;
 
 	}
@@ -279,7 +271,7 @@ public:
 				retorno.setNumIter(numIter);
 				retorno.setRaiz(xk_atual);
 				free(intervalo);
-                raizesResultado[2] = retorno.getRaiz();
+                		raizesResultado[2] = retorno.getRaiz();
 				return retorno;
 			}
 
@@ -294,7 +286,7 @@ public:
 		retorno.setNumIter(numIter);
 		retorno.setError(true);
 		free(intervalo);
-        raizesResultado[2] = retorno.getRaiz();
+        	raizesResultado[2] = retorno.getRaiz();
 		return retorno;
 
 	}
@@ -340,7 +332,7 @@ public:
 		retorno.setRaiz(x);
 		retorno.setNumIter(numIter);
 		free(intervalo);
-        raizesResultado[0] = retorno.getRaiz();
+        	raizesResultado[0] = retorno.getRaiz();
 		return retorno;
 	}	
 
