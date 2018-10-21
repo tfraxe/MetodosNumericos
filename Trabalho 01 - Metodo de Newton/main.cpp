@@ -154,6 +154,21 @@ int main(int argc, char const *argv[])
 
 
 
+	for (int j = 0; j < resultados.size(); j+=3)
+	{
+		cout<<j << "=============================================================================================" << endl;
+		cout << resultados[j].getPolinomio()<< "             |   Newton p/ Polin. |  Newton p/ Multip.  |  Secante   " << endl;
+		cout << "================================================================================================" << endl;
+		cout << "Raiz encontrada                    |         " << resultados[j].getRaiz() << "    \t|    \t" << resultados[j+1].getRaiz() << "\t  |        " << resultados[j+2].getRaiz()  << endl;
+		cout << "Deu erro?                          |         " << (resultados[j].getError() ? "Sim" : "Nao") << "    \t|    \t" << (resultados[j+1].getError() ? "Sim" : "Nao") << "\t  |        " << (resultados[j+2].getError() ? "Sim" : "Nao")  << endl;
+		cout << "Número de iteracoes               |         " << resultados[j].getNumIter() << "    \t|    \t" << resultados[j+1].getNumIter() << "\t  |        " << resultados[j+2].getNumIter()  << endl;
+		cout << "Valor do polin. na raiz encontrada |         " << polynomials[j/3].calcular(resultados[j].getRaiz()) << "    \t|    \t" << polynomials[j/3].calcular(resultados[j+1].getRaiz()) << "\t  |        " << polynomials[j/3].calcular(resultados[j+2].getRaiz())  << endl;
+		cout << "================================================================================================\n" << endl;
+	}
+
+
+
+
 
 	// Versão Antiga 
 

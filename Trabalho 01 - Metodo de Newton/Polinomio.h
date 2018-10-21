@@ -215,8 +215,8 @@ public:
 
 		double* intervalo = (double*) calloc(2, sizeof(double));
 		this->getIntervalo(intervalo);
-		//double currentValue = (intervalo[0] + intervalo[1]) / 2;
-		double currentValue = intervalo[0];
+		double currentValue = (intervalo[0] + intervalo[1]) / 2;
+		//double currentValue = intervalo[0];
 		free(intervalo);
 		resultado.setChuteInicial(currentValue);
 
