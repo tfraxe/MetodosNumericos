@@ -135,7 +135,8 @@ public:
 
 		}
 
-		out << p.coeficientes[p.grau];
+		if(p.coeficientes[p.grau] != 0)
+			out << p.coeficientes[p.grau];
 		return out;
 	}
 
@@ -199,13 +200,12 @@ public:
     }
 
 
-	Resultado calcularRaizNewtonMultiplicidade(unsigned short int p, double precisao, double guess)
+	Resultado calcularRaizNewtonMultiplicidade(unsigned short int p, double precisao)
 	{
 		Resultado resultado;
 		stringstream polinomio;
 		polinomio << *this;
 		resultado.setPolinomio(polinomio.str());
-		resultado.setChuteInicial(guess);
 		resultado.setMetodo("Método de Newton para Multiplicidade");
 		
 
@@ -213,7 +213,14 @@ public:
 	
 		Polinomio derivada = this->gerarDerivada();
 
-		double currentValue = guess;
+		double* intervalo = (double*) calloc(2, sizeof(double));
+		this->getIntervalo(intervalo);
+		//double currentValue = (intervalo[0] + intervalo[1]) / 2;
+		double currentValue = intervalo[0];
+		free(intervalo);
+		resultado.setChuteInicial(currentValue);
+
+		//double currentValue = guess;
 
 		double nextValue;
 
@@ -222,13 +229,14 @@ public:
 		while (numIter < 1000)
 		{
 			
-			nextValue = currentValue - p* this->calcular(currentValue)/derivada.calcular(currentValue);
+			nextValue = currentValue - p*this->calcular(currentValue)/derivada.calcular(currentValue);
 
-
-			if (abs(nextValue - currentValue) < precisao){
+			//abs(nextValue - currentValue) < precisao || abs(this->calcular(nextValue)) < precisao
+			if (abs(nextValue - currentValue) < precisao || abs(this->calcular(nextValue)) < precisao){
 				resultado.setRaiz(nextValue);
 				resultado.setNumIter(numIter + 1);
 				resultado.setError(false);
+				//free(intervalo);
                 		raizesResultado[1] = resultado.getRaiz();
 				return resultado;
 
@@ -242,6 +250,7 @@ public:
 		resultado.setRaiz(0.0);
 		resultado.setNumIter(numIter + 1);
 		resultado.setError(true);
+		//free(intervalo);
         	raizesResultado[1] = resultado.getRaiz();
 		return resultado;
 
@@ -259,10 +268,10 @@ public:
 		polinomio << *this;
 		retorno.setPolinomio(polinomio.str());
 		retorno.setMetodo("Metodo da Secante para multiplicidade");
-		retorno.setChuteInicial(xk_atual);
 
 		xk_anterior = intervalo[0] + 0.5;
 		xk_atual = xk_anterior + 0.2;
+		retorno.setChuteInicial(xk_atual);
 
 		while(numIter < 1000)
 		{
