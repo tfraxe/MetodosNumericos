@@ -178,18 +178,23 @@ public:
 				((this->calcular(c) >= 0) && (this->calcular(c+1) <= 0)) )
 				{
 					ret[0] = c; ret[1] = c+1;
-					c = 100;
+					c = 101;
 				}
 
 			if( ((this->calcular(-c) <= 0) && (this->calcular(-(c+1)) >= 0)) || 
 				((this->calcular(-c) >= 0) && (this->calcular(-(c+1)) <= 0)) )
 				{
 					ret[0] = -c; ret[1] = -(c+1);
-					c = 100;
+					c = 101;
 				}
 
 			c++;
 		}
+
+		if(c == 100)
+			{
+				ret[0] = 0; ret[1] = 0;
+			}
 	}
 	
 	double* getRaizes() //=====================================
@@ -256,14 +261,15 @@ public:
 
 	}
 
-	Resultado calcularRaizSecanteMultiplicidade(double precisao,unsigned short int p)
+	Resultado calcularRaizSecanteMultiplicidade(double precisao,int p)
 	{
-		double xk_prox, xk_anterior, xk_atual, numIter=1, *intervalo;;
+		double xk_prox, xk_anterior, xk_atual, *intervalo;
+		int numIter=1,flag=0;
 		Resultado retorno;
 
 		intervalo = (double*) calloc(2, sizeof(double));
 		this->getIntervalo(intervalo);
-
+			
 		stringstream polinomio;
 		polinomio << *this;
 		retorno.setPolinomio(polinomio.str());
@@ -271,6 +277,7 @@ public:
 
 		xk_anterior = intervalo[0] + 0.5;
 		xk_atual = xk_anterior + 0.2;
+		
 		retorno.setChuteInicial(xk_atual);
 
 		while(numIter < 1000)
@@ -280,22 +287,39 @@ public:
 				retorno.setNumIter(numIter);
 				retorno.setRaiz(xk_atual);
 				free(intervalo);
-                		raizesResultado[2] = retorno.getRaiz();
+                raizesResultado[2] = retorno.getRaiz();
+				return retorno;
+			}
+			if( (xk_atual > 0) && (xk_anterior < 0) ||
+				(xk_atual < 0) && (xk_anterior > 0) )
+			{
+				flag++;
+			}
+			if(flag >= 50)
+			{
+				retorno.setRaiz(xk_atual);
+				retorno.setNumIter(numIter);
+				retorno.setError(true);
+				free(intervalo);
+		        raizesResultado[2] = retorno.getRaiz();
 				return retorno;
 			}
 
 			xk_prox = xk_atual - ((p*this->calcular(xk_atual)*(xk_atual - xk_anterior))/(this->calcular(xk_atual) - this->calcular(xk_anterior)));
+			
+			
+
 			xk_anterior = xk_atual;
 			xk_atual = xk_prox;
 
 			numIter++;
 		}
-
+		
 		retorno.setRaiz(xk_atual);
 		retorno.setNumIter(numIter);
 		retorno.setError(true);
 		free(intervalo);
-        	raizesResultado[2] = retorno.getRaiz();
+        raizesResultado[2] = retorno.getRaiz();
 		return retorno;
 
 	}

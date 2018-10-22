@@ -171,10 +171,10 @@ int main(int argc, char const *argv[])
 
 
 	// Versão Antiga 
-
+	/*
 	vector<double> coef {1, -5, 6, 4, -8}; //Coeficiente do polinômio. A primeira posição corresponde ao coeficiente de maior grau. 
 
-	try{
+	*/try{/*
 		Polinomio teste(4, coef);
         	int n=1;
 		double precisao,xk_ant,xk_prox;
@@ -187,7 +187,7 @@ int main(int argc, char const *argv[])
 
 		Polinomio derivada = teste.gerarDerivada();
 		cout << "Derivada de " << teste << ": \n " << derivada << endl;
-		cout << "Valor de 2 na derivada: " << derivada.calcular(2) << endl;*/
+		cout << "Valor de 2 na derivada: " << derivada.calcular(2) << endl;*
 		
 
 		precisao = 0.0001;
@@ -199,7 +199,7 @@ int main(int argc, char const *argv[])
 		/* 
 
 						Método da Secante 
-		*/
+		*
 
 		
 		Resultado result = teste.calcularRaizSecanteMultiplicidade(precisao,multiplicidade);
@@ -215,7 +215,7 @@ int main(int argc, char const *argv[])
 
 		/*
 						Método de Newton para multiplicidade
-		*/
+		*
 		
 
 		Resultado resul = teste.calcularRaizNewtonMultiplicidade(multiplicidade, precisao);
@@ -230,7 +230,7 @@ int main(int argc, char const *argv[])
 
 		/*
 						Método de Newton para polinomios
-		*/
+		*
 
 		Resultado resposta = teste.calcularRaizNewtonPolinomios(precisao);
 		cout << "================== " << resposta.getMetodo() << " ==================" << endl;
@@ -256,7 +256,7 @@ int main(int argc, char const *argv[])
         
 		/*
 		                              Printa as linhas do quadro comparativo:
-		*/
+		*
 		cout << "==============================================================================" << endl;
 		cout << "       Polinomio       |  Newnton p/ Polin. |  Newton p/ Multip.  |  Secante   " << endl;
 		cout << "==============================================================================" << endl;
@@ -268,7 +268,7 @@ int main(int argc, char const *argv[])
 		    cont++;
 		}
 		cout << "==============================================================================\n" << endl;
-		free(p);
+		free(p);*/
 		
 		/* 
 		 * 
