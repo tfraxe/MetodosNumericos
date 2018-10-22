@@ -140,6 +140,7 @@ int main(int argc, char const *argv[])
 	input();
 	encontrarRaizes();
 
+	/*
 	for(auto r : resultados)
 	{
 		cout << "================ " << r.getMetodo() << " ================" << endl;
@@ -151,9 +152,11 @@ int main(int argc, char const *argv[])
 		cout << "Deu erro? " << (r.getError() ? "Sim" : "Não") << endl;
 		cout << "======================================================================\n" << endl;
 	}
+	*/
 
 
-
+	system("clear");
+	
 	for (int j = 0; j < resultados.size(); j+=3)
 	{
 		cout<<j << "=============================================================================================" << endl;
