@@ -171,21 +171,24 @@ public:
 	void getIntervalo(double *ret)
 	{
 		int c=0;
+		bool flag = true;
 
 		while(c<100)
 		{
-			if( ((this->calcular(c) <= 0) && (this->calcular(c+1) >= 0)) || 
-				((this->calcular(c) >= 0) && (this->calcular(c+1) <= 0)) )
+			if( ( ((this->calcular(c) <= 0) && (this->calcular(c+1) >= 0)) || 
+				  ((this->calcular(c) >= 0) && (this->calcular(c+1) <= 0)) ) && flag )
 				{
 					ret[0] = c; ret[1] = c+1;
 					c = 101;
+					flag = false;
 				}
 
-			if( ((this->calcular(-c) <= 0) && (this->calcular(-(c+1)) >= 0)) || 
-				((this->calcular(-c) >= 0) && (this->calcular(-(c+1)) <= 0)) )
+			if( ( ((this->calcular(-c) <= 0) && (this->calcular(-(c+1)) >= 0)) || 
+				  ((this->calcular(-c) >= 0) && (this->calcular(-(c+1)) <= 0)) ) && flag )
 				{
 					ret[0] = -c; ret[1] = -(c+1);
 					c = 101;
+					flag = false;
 				}
 
 			c++;
@@ -261,10 +264,10 @@ public:
 
 	}
 
-	Resultado calcularRaizSecanteMultiplicidade(double precisao,int p)
+	Resultado calcularRaizSecanteMultiplicidade(double precisao,int multiplicidade)
 	{
 		double xk_prox, xk_anterior, xk_atual, *intervalo;
-		int numIter=1,flag=0;
+		int numIter=1;
 		Resultado retorno;
 
 		intervalo = (double*) calloc(2, sizeof(double));
@@ -280,35 +283,37 @@ public:
 		
 		retorno.setChuteInicial(xk_atual);
 
+		if(abs(this->calcular(xk_anterior)) < precisao) 
+		{
+			retorno.setNumIter(numIter);
+			retorno.setRaiz(xk_anterior);
+			free(intervalo);
+			return retorno;
+		}
+
+		if( (abs(this->calcular(xk_atual)) < precisao) ||
+			(abs(xk_atual - xk_anterior)   < precisao) )
+		{
+			retorno.setNumIter(numIter);
+			retorno.setRaiz(xk_atual);
+			free(intervalo);
+			return retorno;
+		} 
+
 		while(numIter < 1000)
 		{
-			if(abs(xk_anterior - xk_atual) < precisao)
-			{
-				retorno.setNumIter(numIter);
-				retorno.setRaiz(xk_atual);
-				free(intervalo);
-                raizesResultado[2] = retorno.getRaiz();
-				return retorno;
-			}
-			if( (xk_atual > 0) && (xk_anterior < 0) ||
-				(xk_atual < 0) && (xk_anterior > 0) )
-			{
-				flag++;
-			}
-			if(flag >= 50)
-			{
-				retorno.setRaiz(xk_atual);
-				retorno.setNumIter(numIter);
-				retorno.setError(true);
-				free(intervalo);
-		        raizesResultado[2] = retorno.getRaiz();
-				return retorno;
-			}
-
-			xk_prox = xk_atual - ((p*this->calcular(xk_atual)*(xk_atual - xk_anterior))/(this->calcular(xk_atual) - this->calcular(xk_anterior)));
-			
+			xk_prox = xk_atual - ( (multiplicidade*this->calcular(xk_atual)*(xk_atual - xk_anterior))/(this->calcular(xk_atual) - this->calcular(xk_anterior)) );
 			
 
+			if( (abs(this->calcular(xk_prox)) < precisao) ||
+				(abs(xk_prox - xk_atual)  	  < precisao) )
+			{
+				retorno.setNumIter(numIter);
+				retorno.setRaiz(xk_prox);
+				free(intervalo);
+				return retorno;
+			}		
+			
 			xk_anterior = xk_atual;
 			xk_atual = xk_prox;
 
@@ -319,9 +324,7 @@ public:
 		retorno.setNumIter(numIter);
 		retorno.setError(true);
 		free(intervalo);
-        raizesResultado[2] = retorno.getRaiz();
 		return retorno;
-
 	}
 
 	Resultado calcularRaizNewtonPolinomios(double precisao)
