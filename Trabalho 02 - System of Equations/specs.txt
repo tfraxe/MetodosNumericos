@@ -1,0 +1,16 @@
+Tema4:
+Uma determinada reação química produz uma quantidade c de CO 2 medida em ppm (parte por milhão) que pode variar dependendo das
+condições ambientais. Nesse caso, podem-se ter quantidades c 1 , c 2 ,..., c n diferentes. Essas quantidades podem ser calculadas a partir da
+solução de um sistema de equações lineares Ac = d por fatoração LU da matriz A diretamente, usando a definição de produto de matrizes.
+Esquemas desse tipo são conhecidos como compactos, e o equivalente à fatoração A=LU com L triangular inferior com diagonal unitária
+e U triangular superior é chamado de redução de Doolittle. O processo é baseado em alguns passos: a) primeiro multiplica-se a primeira
+linha de L pela j-ésima coluna de U e iguala-se a a 1j , obtendo-se os elementos u 1j ; b) depois multiplica-se a i-ésima linha de L pela
+primeira coluna de U, igualando-se a a i1 de onde se obtém os elementos l i1 ; c) repete-se o processo para as demais linhas e colunas até se
+obter os demais elementos de L e U. Desenvolva um sistema para calcular todos as quantidades desejadas com requisitos dados a seguir:
+a) Implementar algoritmo para calcular {c} pela fatoração LU, usando a pivotação.
+b) Implementar algoritmo para calcular {c} pela redução de Doolittle, sem pivotação.
+c) Calibrar sistema feito usando como padrão a matriz [A] e o vetor {d} dados abaixo. [Ver no arquivo .pdf enviado pelo professor]
+d) Fornecer quadro resposta para cada método, variando os valores de [A] e os de {d}.
+
+Dados de entrada: n (número de quantidades), termos de [A] nxn e termos de{d} nx1 .
+Dados de saída: termos de {c} nx1 que representam as c quantidades c 1 , c 2 ,..., c n .
