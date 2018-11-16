@@ -27,7 +27,6 @@ int main(int argc, char* argv[])
         b.setElemento(i, 0, valor);
     }
     system("clear");
-    //Matriz x = SistemasEquacoes::solucaoFatoracaoLU(A, b);
-    //x.printMatriz("Solucao do sistema");
+    Matriz x = SistemasEquacoes::solucaoFatoracaoLU(A, b);
     return 0;
 }
