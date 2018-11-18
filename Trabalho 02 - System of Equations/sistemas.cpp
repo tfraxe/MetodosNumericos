@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <iostream>
 #include "sistemas.h"
 
 Matriz SistemasEquacoes::solucaoFatoracaoLU(Matriz A, Matriz b)
@@ -73,5 +73,96 @@ Matriz SistemasEquacoes::solucaoFatoracaoLU(Matriz A, Matriz b)
 
 Matriz SistemasEquacoes::solucaoDoolittle(Matriz A, Matriz b)
 {
+
+    //Fatoração LU usando Redução de Doolittle
+
+    int linhas = A.getQuantLinhas();
+    int colunas = A.getQuantColunas();
+
+    Matriz L(linhas, colunas); //Lower triangle matrix
+    Matriz U(linhas, colunas); //Upper triangle matrix
+
+    for(int i = 0; i < linhas; i++)
+        L.setElemento(i, i, 1);      
+
+
+    for (int k = 0; k < linhas; k++) {
+        
+        for(int m = k; m < linhas; m++) {
+
+            int soma = 0;
+            
+            for (int j = 0; j < k; j++) {
+                soma += L.getElemento(k, j) * U.getElemento(j, m); 
+            }
+
+            U.setElemento(k, m, (A.getElemento(k, m) - soma));
+
+        }
+
+        for(int i = k+1; i < linhas; i++) {
+            
+            if(i != k) {
+                
+                int soma2 = 0;
+
+                for (int j = 0; j < k; j++) {
+                    soma2 += L.getElemento(i, j) * U.getElemento(j, k);
+                }
+
+                L.setElemento(i, k, (A.getElemento(i, k) - soma2) / U.getElemento(k, k));
+            }
+
+        }
+    }
+
+
+
+    // Resolvendo sistema de equações usando substituições sucessivas e retroativas
+
+    Matriz y(linhas, 1);
+    Matriz x(linhas, 1);
+
+    //Resolvendo Ly = b
+    y.setElemento(0, 0, b.getElemento(0, 0));
+
+    for (int l = 1; l < linhas; l++) {
+        int somaAnteriores = 0;
+
+        for (int j = 0; j < l; j++) {
+            somaAnteriores += L.getElemento(l, j) * y.getElemento(j, 0);
+        }
+
+        y.setElemento(l, 0, b.getElemento(l, 0) - somaAnteriores);
+    }
+
+    
+    //Resolvendo Ux = y
+
+    x.setElemento(linhas - 1, 0, y.getElemento(linhas - 1, 0) / U.getElemento (linhas - 1, colunas - 1));
+
+    
+    
+    for (int l = linhas - 2; l >= 0; l--) {
+
+        int somaPosteriores = 0;
+
+        for (int j = l+1; j < linhas; j++) {
+            somaPosteriores += U.getElemento(l, j) * x.getElemento(j, 0);
+        }
+
+        double a = y.getElemento(l, 0);
+
+
+        x.setElemento(l, 0, (y.getElemento(l, 0) - somaPosteriores) / U.getElemento(l, l));
+        
+        
+
+    }
+
+
+    x.printMatriz("Solucao Doolittle");
+    Matriz resultado = Matriz::multiplicar(A, x);
+    resultado.printMatriz("\nMatriz Ax Doolittle");
 
 }
