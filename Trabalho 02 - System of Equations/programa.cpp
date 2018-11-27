@@ -28,6 +28,6 @@ int main(int argc, char* argv[])
     }
     system("clear");
     Matriz x = SistemasEquacoes::solucaoFatoracaoLU(A, b);
-    Matriz x2 = SistemasEquacoes::solucaoDoolittle(A, b);
+    SistemasEquacoes::solucaoDoolittle(A, b);
     return 0;
 }

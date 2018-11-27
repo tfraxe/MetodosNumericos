@@ -1,6 +1,8 @@
 #include <iostream>
 #include "sistemas.h"
 
+using namespace std;
+
 Matriz SistemasEquacoes::solucaoFatoracaoLU(Matriz A, Matriz b)
 {
     int linhas = A.getQuantLinhas();
@@ -71,7 +73,7 @@ Matriz SistemasEquacoes::solucaoFatoracaoLU(Matriz A, Matriz b)
     resultado.printMatriz("Matriz Ax");
 }
 
-Matriz SistemasEquacoes::solucaoDoolittle(Matriz A, Matriz b)
+void SistemasEquacoes::solucaoDoolittle(Matriz A, Matriz b)
 {
 
     //Fatoração LU usando Redução de Doolittle
@@ -110,6 +112,12 @@ Matriz SistemasEquacoes::solucaoDoolittle(Matriz A, Matriz b)
                     soma2 += L.getElemento(i, j) * U.getElemento(j, k);
                 }
 
+                if(U.getElemento(k, k) == 0) 
+                {
+                    cout << "Doolittle não conseguiu encontrar solução para o sistema\n";
+                    exit(1);
+                }
+
                 L.setElemento(i, k, (A.getElemento(i, k) - soma2) / U.getElemento(k, k));
             }
 
@@ -139,6 +147,13 @@ Matriz SistemasEquacoes::solucaoDoolittle(Matriz A, Matriz b)
     
     //Resolvendo Ux = y
 
+
+    if (U.getElemento(linhas - 1, colunas - 1) == 0)
+    {
+        cout << "Doolittle não conseguiu encontrar solução para o sistema\n";
+        exit(1);
+    }
+    
     x.setElemento(linhas - 1, 0, y.getElemento(linhas - 1, 0) / U.getElemento (linhas - 1, colunas - 1));
 
     
@@ -153,6 +168,11 @@ Matriz SistemasEquacoes::solucaoDoolittle(Matriz A, Matriz b)
 
         double a = y.getElemento(l, 0);
 
+        if (U.getElemento(l, l) == 0)
+        {
+            cout << "Doolittle não conseguiu encontrar solução para o sistema\n";
+            exit(1);
+        }
 
         x.setElemento(l, 0, (y.getElemento(l, 0) - somaPosteriores) / U.getElemento(l, l));
         
