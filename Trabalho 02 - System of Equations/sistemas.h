@@ -6,7 +6,7 @@
 class SistemasEquacoes
 {
     public:
-        static Matriz solucaoFatoracaoLU(Matriz A, Matriz b);
+        static void solucaoFatoracaoLU(Matriz A, Matriz b);
         static void solucaoDoolittle(Matriz A, Matriz b);
 };
 

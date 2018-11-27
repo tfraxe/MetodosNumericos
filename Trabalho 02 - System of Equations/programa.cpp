@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
         b.setElemento(i, 0, valor);
     }
     system("clear");
-    Matriz x = SistemasEquacoes::solucaoFatoracaoLU(A, b);
+    SistemasEquacoes::solucaoFatoracaoLU(A, b);
     SistemasEquacoes::solucaoDoolittle(A, b);
     return 0;
 }

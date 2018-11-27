@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Matriz SistemasEquacoes::solucaoFatoracaoLU(Matriz A, Matriz b)
+void SistemasEquacoes::solucaoFatoracaoLU(Matriz A, Matriz b)
 {
     int linhas = A.getQuantLinhas();
     int colunas = A.getQuantColunas();
@@ -40,7 +40,7 @@ Matriz SistemasEquacoes::solucaoFatoracaoLU(Matriz A, Matriz b)
         }
         for(int i = k + 1; i < linhas; i++)
         {
-            double m = U.getElemento(i, k) / pivo;
+            double m = U.getElemento(i, k) / U.getElemento(k, k);
             L.setElemento(i, k, m);
             for(int j = k; j < colunas; j++)
             {
@@ -50,7 +50,7 @@ Matriz SistemasEquacoes::solucaoFatoracaoLU(Matriz A, Matriz b)
         }    
     }
     Matriz c = Matriz::multiplicar(P, b);
-    Matriz y(3, 1);
+    Matriz y(linhas, 1);
     for(int i = 0; i < linhas; i++)
     {
         double soma = 0;
@@ -58,7 +58,7 @@ Matriz SistemasEquacoes::solucaoFatoracaoLU(Matriz A, Matriz b)
             soma += (L.getElemento(i, j) * y.getElemento(j, 0));
         y.setElemento(i, 0, c.getElemento(i, 0) - soma);
     }
-    Matriz x(3, 1);
+    Matriz x(linhas, 1);
     for(int i = linhas - 1; i >= 0; i--)
     {
         double soma = 0;
@@ -66,11 +66,11 @@ Matriz SistemasEquacoes::solucaoFatoracaoLU(Matriz A, Matriz b)
             soma += (U.getElemento(i, j) * x.getElemento(j, 0));
         x.setElemento(i, 0, (y.getElemento(i, 0) - soma) / U.getElemento(i, i));
     }
-    A.printMatriz("Matriz A");
-    b.printMatriz("Matriz b");
-    x.printMatriz("Matriz solucao x");
+    A.printMatriz("\nMatriz A");
+    b.printMatriz("\nMatriz b");
+    x.printMatriz("\nMatriz solucao x");
     Matriz resultado = Matriz::multiplicar(A, x);
-    resultado.printMatriz("Matriz Ax");
+    resultado.printMatriz("\nMatriz Ax");
 }
 
 void SistemasEquacoes::solucaoDoolittle(Matriz A, Matriz b)
